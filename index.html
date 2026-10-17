@@ -8,7 +8,7 @@
 :root{--bg1:#ffd6e8;--bg2:#cfe3ff;--card:#fffdf8;--ink:#2a2140;--mute:#7a7096;--acc:#7c4dff;--acc2:#ffe45c;--pink:#ff5fa2;--line:#e3d9ff;--field:#eef3ff}
 @media (prefers-color-scheme:dark){:root{--bg1:#2b1745;--bg2:#10294d;--card:#241b3a;--ink:#f6f0ff;--mute:#aea3cc;--acc:#a98bff;--acc2:#ffd93d;--pink:#ff7ab6;--line:#40335f;--field:#1a1330}}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:var(--ink);font:17px/1.5 "Trebuchet MS","Comic Sans MS","Segoe UI",system-ui,sans-serif;display:flex;justify-content:center;padding:22px 14px}
+body{margin:0;min-height:100vh;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:var(--ink);font:17px/1.5 "Trebuchet MS","Comic Sans MS","Segoe UI",system-ui,sans-serif;display:flex;justify-content:center;padding:22px 14px calc(22px + var(--kb,0px))}
 main{width:100%;max-width:560px;background:var(--card);border:3px solid var(--ink);border-radius:26px;padding:24px;box-shadow:8px 8px 0 var(--ink);align-self:flex-start}
 h1{font-size:2rem;line-height:1.15;margin:0 0 6px}
 h2{font-size:1.3rem;margin:0 0 14px}
@@ -34,10 +34,11 @@ button.ghost:hover{box-shadow:none;transform:none;color:var(--ink)}
 .date{display:inline-block;background:var(--pink);color:#fff;font-weight:700;border:2.5px solid var(--ink);border-radius:999px;padding:3px 14px;margin-bottom:12px;font-size:.95rem}
 .bar{height:14px;background:var(--line);border:2.5px solid var(--ink);border-radius:12px;margin-bottom:18px;overflow:hidden}
 .bar i{display:block;height:100%;background:repeating-linear-gradient(45deg,var(--pink),var(--pink) 10px,var(--acc2) 10px,var(--acc2) 20px);transition:width .3s}
-.rate button{padding:8px 0;width:calc(20% - 8px);text-align:center;line-height:1.2;font-size:1.3rem}
+.rate button{padding:5px 0;width:calc(20% - 8px);text-align:center;line-height:1.2;font-size:1.3rem}
 .rate small{display:block;font-size:.75rem;opacity:.8}
 textarea,input[type=text]{width:100%;font:inherit;color:var(--ink);background:var(--field);border:2.5px solid var(--ink);border-radius:16px;padding:12px;margin-bottom:14px}
-textarea{min-height:110px;resize:vertical}
+textarea{min-height:84px;resize:vertical}
+#act{scroll-margin-bottom:16px}
 pre{white-space:pre-wrap;word-break:break-word;background:var(--field);border:2.5px dashed var(--ink);border-radius:16px;padding:14px;font:inherit;margin:0 0 14px}
 code{background:var(--field);border:1.5px solid var(--line);border-radius:6px;padding:0 5px}
 .dbg{margin-top:22px;border-top:2.5px dashed var(--line);padding-top:12px}
@@ -56,7 +57,7 @@ ol{padding-left:22px;margin:0 0 14px}
 <body>
 <main id="app"></main>
 <script>
-const VERSION="1.3";
+const VERSION="1.3.1";
 // [назва, "на ..." для питання, символ]
 const S={
  ist:["Історія","історії","📜"],tech:["Технології","технологіях","🛠️"],bio:["Біологія","біології","🧬"],
@@ -202,7 +203,6 @@ function render(){
   <div class="row"><button data-act="edit">Змінити ще один розклад</button><button class="ghost" data-act="home">На початок</button></div>`;
  }
  $.innerHTML=h+(dbg?dbgHtml():"");
- const t=document.getElementById("txt");if(t)t.focus();
 }
 function build(){
  const body=st.list.map((l,i)=>{
@@ -223,6 +223,15 @@ $.addEventListener("input",ev=>{
   const q=ev.target.value.trim().toLowerCase();
   $.querySelectorAll(".pk").forEach(b=>b.style.display=b.textContent.toLowerCase().includes(q)?"":"none");
  }
+});
+// iPhone: клавіатура не повинна закривати оцінку й кнопки
+if(window.visualViewport){
+ const vv=visualViewport;
+ const f=()=>document.documentElement.style.setProperty("--kb",Math.max(0,innerHeight-vv.height-vv.offsetTop)+"px");
+ vv.addEventListener("resize",f);vv.addEventListener("scroll",f);
+}
+$.addEventListener("focusin",ev=>{
+ if(ev.target.id==="txt")setTimeout(()=>{const a=document.getElementById("act");if(a)a.scrollIntoView({block:"end",behavior:"smooth"})},350);
 });
 $.addEventListener("click",async ev=>{
  const b=ev.target.closest("button");if(!b)return;const d=b.dataset,ed=st.ed;
