@@ -117,7 +117,7 @@ main{background-image:radial-gradient(circle at 100% 0,rgba(255,95,162,.12),tran
 <div class="deco" aria-hidden="true"><i style="left:5%;top:8%;animation-delay:-0s">📚</i><i style="left:86%;top:6%;animation-delay:-2s">✏️</i><i style="left:10%;top:72%;animation-delay:-4s">🎒</i><i style="left:88%;top:66%;animation-delay:-1s">⭐</i><i style="left:46%;top:90%;animation-delay:-3s">📐</i><i style="left:78%;top:38%;animation-delay:-5s">🎨</i><i style="left:3%;top:40%;animation-delay:-2.5s">🔬</i><i style="left:60%;top:4%;animation-delay:-3.5s">🧮</i></div>
 <main id="app"></main>
 <script>
-const VERSION="2.3";
+const VERSION="2.4";
 // [назва, "на ..." для питання, символ]
 const S={
  ist:["Історія","історії","📜"],tech:["Технології","технологіях","🛠️"],bio:["Біологія","біології","🧬"],
@@ -277,12 +277,16 @@ function render(){
  $.innerHTML=h+(dbg?dbgHtml():"");
  const k=st.step+":"+st.i;if(k!==lastKey){lastKey=k;$.classList.remove("swap");void $.offsetWidth;$.classList.add("swap")}
 }
+const strike=t=>[...t].map(c=>c+"\u0336").join("");
 function build(){
  const nm=st.who==="roma"?"Рома":"Максим",ic=st.who==="roma"?"😎":"🥐";
  const rated=[];
  const body=st.list.map((l,i)=>{
   const a=st.ans[i],title=`${l[2]} ${l[0]}${l[3]?", "+l[3]+"-й урок":""}${a.sub?" (заміна 🔄)":""}`;
-  if(a.r<=0)return `${title} — ${l===LUNCH?"не було":"скасовано"}`;
+  if(a.r<=0){
+   if(l===LUNCH)return `${title} — не було`;
+   return `${l[2]} ${strike(l[0]+(l[3]?", "+l[3]+"-й урок":""))} — скасовано`;
+  }
   rated.push(a.r);
   return `${title} — ${a.r}/10 ${RATE[a.r-1]}\n${a.text.trim()}`;
  }).join("\n\n");
