@@ -2,7 +2,10 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffd6e8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#2b1745" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
 <title>Що було в школі 🎒</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -64,10 +67,8 @@ ol{padding-left:22px;margin:0 0 14px}
 @keyframes bg{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 @keyframes flt{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-24px) rotate(8deg)}}
 @keyframes pop{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
-body{font-family:"Nunito","Trebuchet MS","Segoe UI",system-ui,sans-serif;font-weight:700;background:linear-gradient(120deg,var(--bg1),var(--bg2),var(--bg1));background-size:300% 300%;animation:bg 22s ease infinite;overflow-x:hidden}
-body::before{content:"";position:fixed;inset:0;background:radial-gradient(var(--dot) 2px,transparent 2.5px) 0 0/26px 26px;opacity:.35;pointer-events:none}
-.deco{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
-.deco i{position:absolute;font-style:normal;font-size:2.3rem;opacity:.55;animation:flt 6s ease-in-out infinite}
+html{min-height:100%;background:linear-gradient(120deg,var(--bg1),var(--bg2)) var(--bg1);overscroll-behavior-y:none}
+body{font-family:"Nunito","Trebuchet MS","Segoe UI",system-ui,sans-serif;font-weight:700;overflow-x:hidden;background:none;min-height:100vh;min-height:100dvh;padding:calc(22px + env(safe-area-inset-top,0px)) 14px calc(22px + var(--kb,0px) + env(safe-area-inset-bottom,0px))}
 main{position:relative;z-index:1;padding-top:40px;border-radius:30px;box-shadow:8px 8px 0 var(--ink),14px 14px 0 var(--pink)}
 main.swap{animation:pop .4s cubic-bezier(.2,.9,.3,1.2) both}
 main::before{content:"";position:absolute;top:-14px;left:30px;right:30px;height:26px;border-radius:8px;background:repeating-linear-gradient(90deg,var(--ink) 0 9px,transparent 9px 30px)}
@@ -88,7 +89,7 @@ button.go{background:linear-gradient(180deg,#fff58a,var(--acc2))}
 textarea:focus,input[type=text]:focus{border-color:var(--acc);box-shadow:4px 4px 0 var(--acc)}
 pre{border-style:solid;border-radius:20px;box-shadow:5px 5px 0 var(--pink);font-weight:700}
 .les{border-radius:16px}
-@media (prefers-reduced-motion:reduce){body,main,.deco i{animation:none}button.big span{transition:none}}
+@media (prefers-reduced-motion:reduce){.scene,.scene i,main{animation:none}button.big span{transition:none}}
 
 /* ===== v1.8 ще крутіше ===== */
 @keyframes shine{to{background-position:200% center}}
@@ -111,13 +112,18 @@ textarea{background:linear-gradient(var(--field),var(--field)) padding-box;trans
 main{background-image:radial-gradient(circle at 100% 0,rgba(255,95,162,.12),transparent 40%),radial-gradient(circle at 0 100%,rgba(124,77,255,.12),transparent 40%)}
 @media (prefers-reduced-motion:reduce){h1,.bar i,button.go,.rate button.on{animation:none}button.big::after{display:none}}
 #act{display:flex;flex-wrap:wrap;gap:10px}
+
+/* ===== нерухомий фон на весь екран (скролиться лише зошит) ===== */
+.scene{position:fixed;top:-160px;bottom:-160px;left:-24px;right:-24px;z-index:0;pointer-events:none;overflow:hidden;background:linear-gradient(120deg,var(--bg1),var(--bg2),var(--bg1));background-size:300% 300%;animation:bg 22s ease infinite;transform:translateZ(0)}
+.scene::before{content:"";position:absolute;inset:0;background:radial-gradient(var(--dot) 2px,transparent 2.5px) 0 0/26px 26px;opacity:.35}
+.scene i{position:absolute;font-style:normal;opacity:.5;animation:flt 6s ease-in-out infinite;will-change:transform}
 </style>
 </head>
 <body>
-<div class="deco" aria-hidden="true"><i style="left:5%;top:8%;animation-delay:-0s">📚</i><i style="left:86%;top:6%;animation-delay:-2s">✏️</i><i style="left:10%;top:72%;animation-delay:-4s">🎒</i><i style="left:88%;top:66%;animation-delay:-1s">⭐</i><i style="left:46%;top:90%;animation-delay:-3s">📐</i><i style="left:78%;top:38%;animation-delay:-5s">🎨</i><i style="left:3%;top:40%;animation-delay:-2.5s">🔬</i><i style="left:60%;top:4%;animation-delay:-3.5s">🧮</i></div>
+<div class="scene" aria-hidden="true"><i style="left:5%;top:4%;font-size:2.0rem;animation-duration:7s;animation-delay:-2.9s">🧩</i><i style="left:38%;top:7%;font-size:2.0rem;animation-duration:5s;animation-delay:-2.9s">📓</i><i style="left:65%;top:5%;font-size:1.7rem;animation-duration:9s;animation-delay:-0.5s">✂️</i><i style="left:83%;top:8%;font-size:2.7rem;animation-duration:7s;animation-delay:-3.3s">🔭</i><i style="left:19%;top:18%;font-size:2.0rem;animation-duration:6s;animation-delay:-4.2s">🎭</i><i style="left:33%;top:19%;font-size:2.7rem;animation-duration:7s;animation-delay:-5.1s">🔬</i><i style="left:59%;top:23%;font-size:1.7rem;animation-duration:9s;animation-delay:-3.8s">📏</i><i style="left:92%;top:16%;font-size:2.7rem;animation-duration:8s;animation-delay:-0.3s">🧬</i><i style="left:15%;top:33%;font-size:2.3rem;animation-duration:7s;animation-delay:-4.9s">📚</i><i style="left:39%;top:32%;font-size:2.7rem;animation-duration:5s;animation-delay:-4.2s">⚽</i><i style="left:70%;top:31%;font-size:1.7rem;animation-duration:5s;animation-delay:-3.7s">🖍️</i><i style="left:84%;top:32%;font-size:2.7rem;animation-duration:7s;animation-delay:-5.0s">🧠</i><i style="left:19%;top:43%;font-size:2.7rem;animation-duration:7s;animation-delay:-1.2s">🎓</i><i style="left:31%;top:40%;font-size:2.3rem;animation-duration:6s;animation-delay:-4.4s">🔔</i><i style="left:61%;top:47%;font-size:2.7rem;animation-duration:5s;animation-delay:-0.8s">🏫</i><i style="left:86%;top:42%;font-size:2.0rem;animation-duration:8s;animation-delay:-6.9s">🎵</i><i style="left:9%;top:56%;font-size:2.3rem;animation-duration:8s;animation-delay:-7.7s">🧲</i><i style="left:32%;top:54%;font-size:2.0rem;animation-duration:6s;animation-delay:-0.1s">🌟</i><i style="left:68%;top:54%;font-size:2.3rem;animation-duration:5s;animation-delay:-0.7s">🧮</i><i style="left:88%;top:57%;font-size:2.3rem;animation-duration:6s;animation-delay:-4.1s">💡</i><i style="left:13%;top:70%;font-size:1.7rem;animation-duration:8s;animation-delay:-7.2s">🚀</i><i style="left:42%;top:72%;font-size:2.7rem;animation-duration:8s;animation-delay:-3.2s">🖊️</i><i style="left:56%;top:70%;font-size:1.7rem;animation-duration:6s;animation-delay:-0.4s">🧪</i><i style="left:83%;top:66%;font-size:2.3rem;animation-duration:9s;animation-delay:-0.5s">📐</i><i style="left:5%;top:78%;font-size:1.7rem;animation-duration:7s;animation-delay:-4.3s">📖</i><i style="left:31%;top:79%;font-size:2.7rem;animation-duration:6s;animation-delay:-3.8s">🎒</i><i style="left:70%;top:82%;font-size:2.7rem;animation-duration:5s;animation-delay:-0.6s">✏️</i><i style="left:87%;top:85%;font-size:2.7rem;animation-duration:8s;animation-delay:-2.5s">🍎</i><i style="left:7%;top:96%;font-size:2.3rem;animation-duration:8s;animation-delay:-6.6s">🌍</i><i style="left:32%;top:90%;font-size:2.3rem;animation-duration:6s;animation-delay:-4.1s">🎨</i><i style="left:69%;top:96%;font-size:2.3rem;animation-duration:5s;animation-delay:-3.5s">📝</i><i style="left:84%;top:93%;font-size:2.0rem;animation-duration:7s;animation-delay:-5.4s">📎</i></div>
 <main id="app"></main>
 <script>
-const VERSION="2.4";
+const VERSION="2.5";
 // [назва, "на ..." для питання, символ]
 const S={
  ist:["Історія","історії","📜"],tech:["Технології","технологіях","🛠️"],bio:["Біологія","біології","🧬"],
@@ -168,6 +174,27 @@ const RATE=["💀","💀","😔","😔","😐","🙂","☺️","😄","🤩","�
 
 const st={step:"who",who:null,week:null,list:[],i:0,ans:[],dbg:null,dbgOpen:false,ed:null};
 const $=document.getElementById("app");
+// ===== збереження прогресу (до кінця дня) =====
+const KEY="shkola-progress-v1";
+function persist(){
+ try{
+  if(st.dbg!==null||st.step==="who"||st.step==="week"||st.step==="weekend"){localStorage.removeItem(KEY);return}
+  if(st.step!=="q"&&st.step!=="out")return;
+  localStorage.setItem(KEY,JSON.stringify({day:st.day||new Date().toDateString(),who:st.who,week:st.week,i:st.i,step:st.step,ans:st.ans,sig:st.list.map(l=>l[0]+"|"+(l[3]||"")).join()}));
+ }catch(_){}
+}
+function restore(){
+ try{
+  const d=JSON.parse(localStorage.getItem(KEY)||"null");
+  if(!d||d.day!==new Date().toDateString()||(d.who!=="roma"&&d.who!=="max"))return;
+  st.who=d.who;st.week=d.week;begin();st.day=d.day;
+  const sig=st.list.map(l=>l[0]+"|"+(l[3]||"")).join();
+  if(st.step!=="q"||sig!==d.sig||!Array.isArray(d.ans)||d.ans.length!==st.list.length)throw 0;
+  st.ans=d.ans;st.i=Math.min(Math.max(+d.i||0,0),st.list.length-1);st.step=d.step==="out"?"out":"q";st.restored=st.step==="q"&&!!(st.i>0||st.ans[0].text||st.ans[0].r);
+ }catch(_){Object.assign(st,{step:"who",who:null,week:null,list:[],i:0,ans:[],restored:false});try{localStorage.removeItem(KEY)}catch(_){}}
+}
+document.addEventListener("visibilitychange",()=>{if(document.hidden)persist()});
+addEventListener("pagehide",persist);
 const e=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const okAns=a=>a.text.trim().length>0&&a.r!==0;
 
@@ -194,7 +221,7 @@ function begin(){
   let a=i,b=i;while(a>0&&sc[a-1]===k)a--;while(b<sc.length-1&&sc[b+1]===k)b++;
   return b>a?S[k].slice(0,3).concat(i-a+1):S[k];
  }).concat(noL?[]:[LUNCH]);
- st.ans=st.list.map(()=>({text:"",r:0}));st.i=0;st.step="q";
+ st.ans=st.list.map(()=>({text:"",r:0}));st.i=0;st.step="q";st.day=new Date().toDateString();
 }
 function dbgHtml(){
  if(!st.dbgShown)return "";
@@ -235,7 +262,7 @@ function render(){
   <button class="go" data-act="home">← На початок</button>`;
  }else if(st.step==="q"){
   const l=st.list[st.i],a=st.ans[st.i],last=st.i===st.list.length-1;
-  h=`${datePill()}<div class="bar"><i style="width:${st.i/st.list.length*100}%"></i></div>
+  h=`${datePill()}<div class="bar"><i style="width:${st.i/st.list.length*100}%"></i></div>${st.restored?'<p class="sub" style="margin:0 0 8px">↩️ Продовжуємо з того місця, де ти зупинився</p>':""}
   <h2>${l[2]} ${l===LUNCH?"Що ти їв на обід?":`Що у тебе було на ${e(l[1])}${l[3]?" ("+l[3]+"-й урок)":""}?`}</h2>
   <textarea id="txt" placeholder="${l===LUNCH?'Що їли, смачно чи ні...':'Напиши, що було на уроці...'}">${e(a.r<0?"":a.text)}</textarea>
   <p class="sub" style="margin-bottom:8px">${l===LUNCH?"Оцінка обіду":"Оцінка уроку"}</p>
@@ -276,6 +303,7 @@ function render(){
  }
  $.innerHTML=h+(dbg?dbgHtml():"");
  const k=st.step+":"+st.i;if(k!==lastKey){lastKey=k;$.classList.remove("swap");void $.offsetWidth;$.classList.add("swap")}
+ persist();
 }
 const strike=t=>[...t].map(c=>c+"\u0336").join("");
 function build(){
@@ -301,6 +329,7 @@ function save(){const t=document.getElementById("txt");if(t)st.ans[st.i].text=t.
 $.addEventListener("input",ev=>{
  if(ev.target.id==="txt"){
   st.ans[st.i].text=ev.target.value;
+  persist();
   const ok=okAns(st.ans[st.i]),act=document.getElementById("act"),hn=document.getElementById("hint");
   if(act&&!act.querySelector('[data-act="'+(ok?"next":"skip")+'"]'))act.innerHTML=actBtn(st.ans[st.i],st.i===st.list.length-1);
   if(hn)hn.hidden=ok;
@@ -321,6 +350,7 @@ $.addEventListener("focusin",ev=>{
 $.addEventListener("change",ev=>{if(ev.target.dataset.lunch!==undefined)st.ed.lunch[st.ed.day]=ev.target.checked});
 $.addEventListener("click",async ev=>{
  if(st.step==="who"&&ev.target.closest(".hero")){st.taps=(st.taps||0)+1;if(st.taps>=5){st.dbgShown=true;st.taps=0;render()}return}
+ st.restored=false;
  const b=ev.target.closest("button");if(!b)return;const d=b.dataset,ed=st.ed;
  if(d.who){st.who=d.who;if(d.who==="max")st.step="week";else begin()}
  else if(d.week){st.week=d.week;begin()}
@@ -350,6 +380,7 @@ $.addEventListener("click",async ev=>{
  }else return;
  render();
 });
+restore();
 render();
 </script>
 </body>
