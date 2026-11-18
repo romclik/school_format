@@ -67,7 +67,8 @@ ol{padding-left:22px;margin:0 0 14px}
 @keyframes bg{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 @keyframes flt{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-24px) rotate(8deg)}}
 @keyframes pop{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
-html{min-height:100%;background:linear-gradient(120deg,var(--bg1),var(--bg2)) var(--bg1);overscroll-behavior-y:none}
+html,body{background-color:var(--bg1)}
+html{min-height:100%;overscroll-behavior-y:none}
 body{font-family:"Nunito","Trebuchet MS","Segoe UI",system-ui,sans-serif;font-weight:700;overflow-x:hidden;background:none;min-height:100vh;min-height:100dvh;padding:calc(22px + env(safe-area-inset-top,0px)) 14px calc(22px + var(--kb,0px) + env(safe-area-inset-bottom,0px))}
 main{position:relative;z-index:1;padding-top:40px;border-radius:30px;box-shadow:8px 8px 0 var(--ink),14px 14px 0 var(--pink)}
 main.swap{animation:pop .4s cubic-bezier(.2,.9,.3,1.2) both}
@@ -114,16 +115,30 @@ main{background-image:radial-gradient(circle at 100% 0,rgba(255,95,162,.12),tran
 #act{display:flex;flex-wrap:wrap;gap:10px}
 
 /* ===== нерухомий фон на весь екран (скролиться лише зошит) ===== */
-.scene{position:fixed;top:-160px;bottom:-160px;left:-24px;right:-24px;z-index:0;pointer-events:none;overflow:hidden;background:linear-gradient(120deg,var(--bg1),var(--bg2),var(--bg1));background-size:300% 300%;animation:bg 22s ease infinite;transform:translateZ(0)}
+.scene{position:fixed;top:-160px;bottom:-160px;left:-24px;right:-24px;z-index:0;pointer-events:none;overflow:hidden;background:linear-gradient(180deg,var(--bg1) 0,var(--bg1) 220px,var(--bg2));transform:translateZ(0)}
 .scene::before{content:"";position:absolute;inset:0;background:radial-gradient(var(--dot) 2px,transparent 2.5px) 0 0/26px 26px;opacity:.35}
 .scene i{position:absolute;font-style:normal;opacity:.5;animation:flt 6s ease-in-out infinite;will-change:transform}
+.rate button.hundred{width:100%;font-size:1.15rem;padding:9px 0;background:linear-gradient(100deg,#ff5fa2,#ff9f43,#ffe45c,#7be495,#4dc3ff,#a98bff);color:#2a2140}
+.rate button.hundred b{font-size:1.3rem;letter-spacing:1px}
+.rate button.hundred{margin-top:4px}
+.rate button.hundred.on{background:linear-gradient(100deg,#ff5fa2,#ff9f43,#ffe45c,#7be495,#4dc3ff,#a98bff);animation:none;transform:scale(1.02);box-shadow:4px 4px 0 var(--ink),0 0 0 4px var(--acc2)}
+.rate button.hundred:hover{transform:translateY(-2px)}
+.hwh,.hw{display:grid;grid-template-columns:1fr 84px 32px;gap:8px}
+.hwh{margin:2px 0 4px;font-size:.8rem;font-weight:800;opacity:.75}
+.hw{align-items:start;margin-bottom:8px}
+.hw textarea{min-height:68px;height:68px;margin:0}
+.hw input[type=text]{margin:0;padding:12px 8px}
+button.x{padding:0;width:32px;height:32px;min-width:0;font-size:.75rem;border-radius:10px;margin-top:8px;box-shadow:2px 2px 0 var(--ink)}
+.nw{display:grid;grid-template-columns:24px 1fr 32px;gap:8px;align-items:start;margin-bottom:10px}
+.nw textarea{margin:0;min-height:80px}
+.nn{margin-top:10px;font-weight:800;color:var(--acc);text-align:center}
 </style>
 </head>
 <body>
-<div class="scene" aria-hidden="true"><i style="left:5%;top:4%;font-size:2.0rem;animation-duration:7s;animation-delay:-2.9s">🧩</i><i style="left:38%;top:7%;font-size:2.0rem;animation-duration:5s;animation-delay:-2.9s">📓</i><i style="left:65%;top:5%;font-size:1.7rem;animation-duration:9s;animation-delay:-0.5s">✂️</i><i style="left:83%;top:8%;font-size:2.7rem;animation-duration:7s;animation-delay:-3.3s">🔭</i><i style="left:19%;top:18%;font-size:2.0rem;animation-duration:6s;animation-delay:-4.2s">🎭</i><i style="left:33%;top:19%;font-size:2.7rem;animation-duration:7s;animation-delay:-5.1s">🔬</i><i style="left:59%;top:23%;font-size:1.7rem;animation-duration:9s;animation-delay:-3.8s">📏</i><i style="left:92%;top:16%;font-size:2.7rem;animation-duration:8s;animation-delay:-0.3s">🧬</i><i style="left:15%;top:33%;font-size:2.3rem;animation-duration:7s;animation-delay:-4.9s">📚</i><i style="left:39%;top:32%;font-size:2.7rem;animation-duration:5s;animation-delay:-4.2s">⚽</i><i style="left:70%;top:31%;font-size:1.7rem;animation-duration:5s;animation-delay:-3.7s">🖍️</i><i style="left:84%;top:32%;font-size:2.7rem;animation-duration:7s;animation-delay:-5.0s">🧠</i><i style="left:19%;top:43%;font-size:2.7rem;animation-duration:7s;animation-delay:-1.2s">🎓</i><i style="left:31%;top:40%;font-size:2.3rem;animation-duration:6s;animation-delay:-4.4s">🔔</i><i style="left:61%;top:47%;font-size:2.7rem;animation-duration:5s;animation-delay:-0.8s">🏫</i><i style="left:86%;top:42%;font-size:2.0rem;animation-duration:8s;animation-delay:-6.9s">🎵</i><i style="left:9%;top:56%;font-size:2.3rem;animation-duration:8s;animation-delay:-7.7s">🧲</i><i style="left:32%;top:54%;font-size:2.0rem;animation-duration:6s;animation-delay:-0.1s">🌟</i><i style="left:68%;top:54%;font-size:2.3rem;animation-duration:5s;animation-delay:-0.7s">🧮</i><i style="left:88%;top:57%;font-size:2.3rem;animation-duration:6s;animation-delay:-4.1s">💡</i><i style="left:13%;top:70%;font-size:1.7rem;animation-duration:8s;animation-delay:-7.2s">🚀</i><i style="left:42%;top:72%;font-size:2.7rem;animation-duration:8s;animation-delay:-3.2s">🖊️</i><i style="left:56%;top:70%;font-size:1.7rem;animation-duration:6s;animation-delay:-0.4s">🧪</i><i style="left:83%;top:66%;font-size:2.3rem;animation-duration:9s;animation-delay:-0.5s">📐</i><i style="left:5%;top:78%;font-size:1.7rem;animation-duration:7s;animation-delay:-4.3s">📖</i><i style="left:31%;top:79%;font-size:2.7rem;animation-duration:6s;animation-delay:-3.8s">🎒</i><i style="left:70%;top:82%;font-size:2.7rem;animation-duration:5s;animation-delay:-0.6s">✏️</i><i style="left:87%;top:85%;font-size:2.7rem;animation-duration:8s;animation-delay:-2.5s">🍎</i><i style="left:7%;top:96%;font-size:2.3rem;animation-duration:8s;animation-delay:-6.6s">🌍</i><i style="left:32%;top:90%;font-size:2.3rem;animation-duration:6s;animation-delay:-4.1s">🎨</i><i style="left:69%;top:96%;font-size:2.3rem;animation-duration:5s;animation-delay:-3.5s">📝</i><i style="left:84%;top:93%;font-size:2.0rem;animation-duration:7s;animation-delay:-5.4s">📎</i></div>
+<div class="scene" id="scene" aria-hidden="true"></div>
 <main id="app"></main>
 <script>
-const VERSION="2.5";
+const VERSION="2.6";
 // [назва, "на ..." для питання, символ]
 const S={
  ist:["Історія","історії","📜"],tech:["Технології","технологіях","🛠️"],bio:["Біологія","біології","🧬"],
@@ -170,17 +185,33 @@ const SCHED={
  A:[["es","math","eng","eng","fr","physast","hg"],["physast","math","fr","hg","fr"],["fr","eng","hg","part","nolunch"],["pe","prog","fr","math"],["es","fr","mus","math","hg","nat","nat"]],
  B:[["es","math","eng","eng","fr","physast","hg"],["fr","math","es","pe"],["fr","eng","inf","part","nolunch"],["pe","prog","fr","math"],["es","fr","mus","math","hg","nat"]],
 };
-const RATE=["💀","💀","😔","😔","😐","🙂","☺️","😄","🤩","🔥"];
+const RATE=["💀","😭","😢","😞","😐","🙂","😊","😄","🤩","🔥"];
+const rEmo=r=>r===100?"💯":RATE[Math.min(Math.max(r,1),10)-1];
 
 const st={step:"who",who:null,week:null,list:[],i:0,ans:[],dbg:null,dbgOpen:false,ed:null};
 const $=document.getElementById("app");
+// ===== фон: щоразу інші шкільні емодзі в інших місцях =====
+(function(){
+ const pool=["📚","✏️","🎒","📐","🎨","🔬","🧮","📏","🖍️","📓","🔭","🧪","🌍","🎵","⚽","🧠","💡","📖","🖊️","✂️","📎","🏫","🧬","🎓","🔔","🧲","🚀","🌟","🧩","🎭","📝","🍎","🏀","🎸","🎹","🥁","🎻","🎺","🌈","🦉","🐢","🦋","🐝","🐙","🦄","🐬","🦊","🐼","🍉","🍓","🍕","🍪","🧃","🥪","🚌","🚲","⛅","🌙","⭐","🎯","🏆","🥇","🎲","♟️","🎮","📷","🔍","🧭","🗺️","⏰","📅","💻","🔧","⚡","🌻","🍀","🧸","🎈","🎁","🎉","🏊","🥋","🎾","🏐","🧑‍🏫","🧑‍🎓","🔢","➕","🔠","🧑‍🔬","🌳","🦖","🪐"];
+ const rnd=(a,b)=>a+Math.random()*(b-a);
+ const shuf=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+ const cols=5,rows=10,cells=[];
+ for(let r=0;r<rows;r++)for(let c=0;c<cols;c++)cells.push([c,r]);
+ shuf(cells);const em=shuf(pool.slice());
+ const sizes=[1.5,1.8,2.1,2.4,2.8];
+ const el=document.getElementById("scene");if(!el)return;
+ el.innerHTML=cells.slice(0,36).map(([c,r],k)=>{
+  const dur=rnd(5,10);
+  return `<i style="left:${((c+.5)/cols*100+rnd(-9,9)).toFixed(1)}%;top:${((r+.5)/rows*100+rnd(-4,4)).toFixed(1)}%;font-size:${sizes[Math.floor(Math.random()*sizes.length)]}rem;animation-duration:${dur.toFixed(1)}s;animation-delay:-${rnd(0,dur).toFixed(1)}s">${em[k%em.length]}</i>`;
+ }).join("");
+})();
 // ===== збереження прогресу (до кінця дня) =====
 const KEY="shkola-progress-v1";
 function persist(){
  try{
   if(st.dbg!==null||st.step==="who"||st.step==="week"||st.step==="weekend"){localStorage.removeItem(KEY);return}
-  if(st.step!=="q"&&st.step!=="out")return;
-  localStorage.setItem(KEY,JSON.stringify({day:st.day||new Date().toDateString(),who:st.who,week:st.week,i:st.i,step:st.step,ans:st.ans,sig:st.list.map(l=>l[0]+"|"+(l[3]||"")).join()}));
+  if(!["q","hw","news","out"].includes(st.step))return;
+  localStorage.setItem(KEY,JSON.stringify({day:st.day||new Date().toDateString(),who:st.who,week:st.week,i:st.i,step:st.step,ans:st.ans,hw:st.hw,news:st.news,sig:st.list.map(l=>l[0]+"|"+(l[3]||"")).join()}));
  }catch(_){}
 }
 function restore(){
@@ -190,7 +221,7 @@ function restore(){
   st.who=d.who;st.week=d.week;begin();st.day=d.day;
   const sig=st.list.map(l=>l[0]+"|"+(l[3]||"")).join();
   if(st.step!=="q"||sig!==d.sig||!Array.isArray(d.ans)||d.ans.length!==st.list.length)throw 0;
-  st.ans=d.ans;st.i=Math.min(Math.max(+d.i||0,0),st.list.length-1);st.step=d.step==="out"?"out":"q";st.restored=st.step==="q"&&!!(st.i>0||st.ans[0].text||st.ans[0].r);
+  st.ans=d.ans;st.i=Math.min(Math.max(+d.i||0,0),st.list.length-1);st.step=["hw","news","out"].includes(d.step)?d.step:"q";if(Array.isArray(d.hw)&&d.hw.every(r=>r&&typeof r.t==="string"&&typeof r.m==="string"))st.hw=d.hw;if(Array.isArray(d.news)&&d.news.every(x=>typeof x==="string"))st.news=d.news;st.restored=st.step==="q"&&!!(st.i>0||st.ans[0].text||st.ans[0].r);
  }catch(_){Object.assign(st,{step:"who",who:null,week:null,list:[],i:0,ans:[],restored:false});try{localStorage.removeItem(KEY)}catch(_){}}
 }
 document.addEventListener("visibilitychange",()=>{if(document.hidden)persist()});
@@ -206,6 +237,11 @@ function theDate(){
  return d;
 }
 function dateLine(){const d=theDate();return `${WD[d.getDay()]}, ${d.getDate()} ${MON[d.getMonth()]} ${d.getFullYear()}`}
+const WDA=["неділю","понеділок","вівторок","середу","четвер","п'ятницю","суботу"]; // "на ..."
+function nextDay(){ // завтра; у п'ятницю — понеділок
+ const d=theDate(),w=d.getDay();d.setDate(d.getDate()+(w===5?3:w===6?2:1));
+ return {word:WDA[d.getDay()],date:`${d.getDate()} ${MON[d.getMonth()]}`,full:`${WD[d.getDay()]}, ${d.getDate()} ${MON[d.getMonth()]}`};
+}
 function begin(){
  const idx=dayIdx();
  if(idx===0||idx===6){st.step="weekend";return}
@@ -221,7 +257,7 @@ function begin(){
   let a=i,b=i;while(a>0&&sc[a-1]===k)a--;while(b<sc.length-1&&sc[b+1]===k)b++;
   return b>a?S[k].slice(0,3).concat(i-a+1):S[k];
  }).concat(noL?[]:[LUNCH]);
- st.ans=st.list.map(()=>({text:"",r:0}));st.i=0;st.step="q";st.day=new Date().toDateString();
+ st.ans=st.list.map(()=>({text:"",r:0}));st.hw=[{t:"",m:""},{t:"",m:""},{t:"",m:""}];st.news=["",""];st.i=0;st.step="q";st.day=new Date().toDateString();
 }
 function dbgHtml(){
  if(!st.dbgShown)return "";
@@ -241,7 +277,7 @@ function lessonLine(k,i){return `<div class="les"><span style="display:block"><b
 function schedLine(key,lists){return ` ${key}:[${lists.map(l=>"["+l.map(k=>`"${k}"`).join(",")+"]").join(",")}],`}
 function actBtn(a,last){
  const lunch=st.list[st.i]===LUNCH;
- const main=okAns(a)?`<button class="go" data-act="next">${last?"Готово 🎉":"Далі ➡️"}</button>`:`<button data-act="skip">${lunch?"Обіду не було ❌":"Урок скасовано ❌"}</button>`;
+ const main=okAns(a)?`<button class="go" data-act="next">Далі ➡️</button>`:`<button data-act="skip">${lunch?"Обіду не було ❌":"Урок скасовано ❌"}</button>`;
  const sub=lunch?"":`<button class="${a.sub?"on":""}" data-act="sub">Була заміна 🔄</button>`;
  return main+sub;
 }
@@ -266,9 +302,23 @@ function render(){
   <h2>${l[2]} ${l===LUNCH?"Що ти їв на обід?":`Що у тебе було на ${e(l[1])}${l[3]?" ("+l[3]+"-й урок)":""}?`}</h2>
   <textarea id="txt" placeholder="${l===LUNCH?'Що їли, смачно чи ні...':'Напиши, що було на уроці...'}">${e(a.r<0?"":a.text)}</textarea>
   <p class="sub" style="margin-bottom:8px">${l===LUNCH?"Оцінка обіду":"Оцінка уроку"}</p>
-  <div class="row rate">${RATE.map((r,i)=>`<button class="${a.r===i+1?'on':''}" style="--c:hsl(${i*13} 95% 62%)" data-r="${i+1}">${r}<small>${i+1}</small></button>`).join("")}</div>
+  <div class="row rate">${RATE.map((r,i)=>`<button class="${a.r===i+1?'on':''}" style="--c:hsl(${i*13} 95% 62%)" data-r="${i+1}">${r}<small>${i+1}</small></button>`).join("")}<button class="hundred ${a.r===100?'on':''}" data-r="100">💯 <b>100</b></button></div>
   <div class="row"><span id="act">${actBtn(a,last)}</span><button class="ghost" data-act="prev">← Назад</button></div>
   <p class="sub" id="hint" style="font-size:.85rem" ${okAns(a)?"hidden":""}>Щоб піти далі, напиши опис і постав оцінку. Або натисни, що уроку не було. Якщо була заміна, натисни «Була заміна» і розкажи, що було.</p>`;
+ }else if(st.step==="hw"){
+  const nd=nextDay();
+  h=`${datePill()}<div class="hero">📝</div><h2>Домашнє завдання на ${nd.word}</h2>
+  <p class="sub" style="margin-bottom:10px">${nd.full}. Зліва напиши, що задали і з якого предмета. Справа приблизно скільки часу це займе. Час можна не писати, тоді завдання все одно залишиться.</p>
+  <div class="hwh"><span>Що задали</span><span>Час</span><span></span></div>
+  ${st.hw.map((r,i)=>`<div class="hw"><textarea data-hwt="${i}" placeholder="Напр.: Алгебра, №45-48">${e(r.t)}</textarea><input type="text" data-hwm="${i}" placeholder="30 хв" value="${e(r.m)}" maxlength="20" autocomplete="off"><button class="x" data-act="hwRm" data-i="${i}" aria-label="Видалити">✖</button></div>`).join("")||'<p class="sub">Домашки немає? Тоді просто тисни «Далі».</p>'}
+  <div class="row"><button data-act="hwAdd">➕ Додати ще</button></div>
+  <div class="row"><button class="go" data-act="hwNext">Далі ➡️</button><button class="ghost" data-act="prev">← Назад</button></div>`;
+ }else if(st.step==="news"){
+  h=`${datePill()}<div class="hero">📰</div><h2>Новини зі школи</h2>
+  <p class="sub" style="margin-bottom:10px">Що цікавого сталося в школі? Кожну новину пиши в окремому віконці.</p>
+  ${st.news.map((t,i)=>`<div class="nw"><span class="nn">${i+1}</span><textarea data-nws="${i}" placeholder="Новина ${i+1}...">${e(t)}</textarea><button class="x" data-act="newsRm" data-i="${i}" aria-label="Видалити">✖</button></div>`).join("")||'<p class="sub">Новин немає? Тоді просто тисни «Готово».</p>'}
+  <div class="row"><button data-act="newsAdd">➕ Додати новину</button></div>
+  <div class="row"><button class="go" data-act="newsNext">Готово 🎉</button><button class="ghost" data-act="prev">← Назад</button></div>`;
  }else if(st.step==="out"){
   h=`<div class="hero">✅</div><h2>Все готово!</h2>
   <pre id="out">${e(build())}</pre>
@@ -315,15 +365,20 @@ function build(){
    if(l===LUNCH)return `${title} — не було`;
    return `${l[2]} ${strike(l[0]+(l[3]?", "+l[3]+"-й урок":""))} — скасовано`;
   }
-  rated.push(a.r);
-  return `${title} — ${a.r}/10 ${RATE[a.r-1]}\n${a.text.trim()}`;
+  rated.push(Math.min(a.r,10));
+  return `${title} — ${a.r}/10 ${rEmo(a.r)}\n${a.text.trim()}`;
  }).join("\n\n");
  let avg="⭐ Середня оцінка дня (уроки й обід): —";
  if(rated.length){
   const m=rated.reduce((x,y)=>x+y,0)/rated.length;
-  avg=`⭐ Середня оцінка дня (уроки й обід): ${m.toFixed(1).replace(".",",")}/10 ${RATE[Math.max(1,Math.round(m))-1]}`;
+  avg=`⭐ Середня оцінка дня (уроки й обід): ${m.toFixed(1).replace(".",",")}/10 ${rEmo(Math.round(m))}`;
  }
- return `${ic} ${nm}\n📅 ${dateLine()}\n\n${body}\n\n${avg}`;
+ const nd=nextDay(),one=x=>x.trim().replace(/\s*\n\s*/g," ");
+ const hw=st.hw.filter(r=>r.t.trim());
+ const hwB=`📝 Домашнє завдання на ${nd.word} (${nd.date}):\n`+(hw.length?hw.map((r,i)=>{const m=one(r.m);return `${i+1}. ${one(r.t)}${m?" — "+(/^\d+$/.test(m)?m+" хв":m):""}`}).join("\n"):"немає 🎉");
+ const nw=st.news.filter(x=>x.trim());
+ const nwB=`📰 Новини зі школи:\n`+(nw.length?nw.map((x,i)=>`${i+1}. ${x.trim()}`).join("\n"):"немає");
+ return `${ic} ${nm}\n📅 ${dateLine()}\n\n${body}\n\n${avg}\n\n${hwB}\n\n${nwB}`;
 }
 function save(){const t=document.getElementById("txt");if(t)st.ans[st.i].text=t.value}
 $.addEventListener("input",ev=>{
@@ -333,6 +388,9 @@ $.addEventListener("input",ev=>{
   const ok=okAns(st.ans[st.i]),act=document.getElementById("act"),hn=document.getElementById("hint");
   if(act&&!act.querySelector('[data-act="'+(ok?"next":"skip")+'"]'))act.innerHTML=actBtn(st.ans[st.i],st.i===st.list.length-1);
   if(hn)hn.hidden=ok;
+ }else if(ev.target.dataset.hwt!==undefined){st.hw[+ev.target.dataset.hwt].t=ev.target.value;persist()
+ }else if(ev.target.dataset.hwm!==undefined){st.hw[+ev.target.dataset.hwm].m=ev.target.value;persist()
+ }else if(ev.target.dataset.nws!==undefined){st.news[+ev.target.dataset.nws]=ev.target.value;persist()
  }else if(ev.target.id==="srch"){
   const q=ev.target.value.trim().toLowerCase();
   $.querySelectorAll(".pk").forEach(b=>b.style.display=b.textContent.toLowerCase().includes(q)?"":"none");
@@ -346,6 +404,7 @@ if(window.visualViewport){
 }
 $.addEventListener("focusin",ev=>{
  if(ev.target.id==="txt")setTimeout(()=>{const a=document.getElementById("act");if(a)a.scrollIntoView({block:"end",behavior:"smooth"})},350);
+ else if(ev.target.dataset&&(ev.target.dataset.hwt!==undefined||ev.target.dataset.hwm!==undefined||ev.target.dataset.nws!==undefined))setTimeout(()=>ev.target.scrollIntoView({block:"center",behavior:"smooth"}),350);
 });
 $.addEventListener("change",ev=>{if(ev.target.dataset.lunch!==undefined)st.ed.lunch[st.ed.day]=ev.target.checked});
 $.addEventListener("click",async ev=>{
@@ -358,10 +417,16 @@ $.addEventListener("click",async ev=>{
  else if(d.r){save();const a=st.ans[st.i];a.r=a.r===+d.r?0:+d.r}
  else if(d.act==="dbg"){st.dbgOpen=!st.dbgOpen}
  else if(d.act==="home"){st.step="who"}
- else if(d.act==="next"){save();if(!okAns(st.ans[st.i]))return;if(st.i<st.list.length-1)st.i++;else st.step="out"}
- else if(d.act==="skip"){st.ans[st.i]={text:"-",r:-1};if(st.i<st.list.length-1)st.i++;else st.step="out"}
+ else if(d.act==="next"){save();if(!okAns(st.ans[st.i]))return;if(st.i<st.list.length-1)st.i++;else st.step="hw"}
+ else if(d.act==="skip"){st.ans[st.i]={text:"-",r:-1};if(st.i<st.list.length-1)st.i++;else st.step="hw"}
  else if(d.act==="sub"){save();const a=st.ans[st.i];a.sub=!a.sub}
- else if(d.act==="prev"){save();if(st.step==="out")st.step="q";else if(st.i>0)st.i--;else st.step=st.who==="max"?"week":"who"}
+ else if(d.act==="hwNext"){st.step="news"}
+ else if(d.act==="newsNext"){st.step="out"}
+ else if(d.act==="hwAdd"){st.hw.push({t:"",m:""})}
+ else if(d.act==="hwRm"){st.hw.splice(+d.i,1)}
+ else if(d.act==="newsAdd"){st.news.push("")}
+ else if(d.act==="newsRm"){st.news.splice(+d.i,1)}
+ else if(d.act==="prev"){save();if(st.step==="out")st.step="news";else if(st.step==="news")st.step="hw";else if(st.step==="hw")st.step="q";else if(st.i>0)st.i--;else st.step=st.who==="max"?"week":"who"}
  else if(d.act==="edit"){st.step="edWho"}
  else if(d.ed){st.ed={key:d.ed,day:0,pick:false,lists:SCHED[d.ed].map(l=>l.filter(k=>k!=="nolunch")),lunch:SCHED[d.ed].map(l=>!l.includes("nolunch"))};st.step="edDay"}
  else if(d.act==="pick"){ed.pick=true}
