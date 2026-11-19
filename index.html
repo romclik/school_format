@@ -123,22 +123,30 @@ main{background-image:radial-gradient(circle at 100% 0,rgba(255,95,162,.12),tran
 .rate button.hundred{margin-top:4px}
 .rate button.hundred.on{background:linear-gradient(100deg,#ff5fa2,#ff9f43,#ffe45c,#7be495,#4dc3ff,#a98bff);animation:none;transform:scale(1.02);box-shadow:4px 4px 0 var(--ink),0 0 0 4px var(--acc2)}
 .rate button.hundred:hover{transform:translateY(-2px)}
-.hwh,.hw{display:grid;grid-template-columns:1fr 84px 32px;gap:8px}
-.hwh{margin:2px 0 4px;font-size:.8rem;font-weight:800;opacity:.75}
-.hw{align-items:start;margin-bottom:8px}
-.hw textarea{min-height:68px;height:68px;margin:0}
+.hwi{margin-bottom:10px}
+.hn{font-weight:800;margin:0 0 4px 2px}
+.hw{display:grid;grid-template-columns:1fr 84px;gap:8px;align-items:start}
+.hw textarea{min-height:56px;height:56px;margin:0}
 .hw input[type=text]{margin:0;padding:12px 8px}
 button.x{padding:0;width:32px;height:32px;min-width:0;font-size:.75rem;border-radius:10px;margin-top:8px;box-shadow:2px 2px 0 var(--ink)}
 .nw{display:grid;grid-template-columns:24px 1fr 32px;gap:8px;align-items:start;margin-bottom:10px}
 .nw textarea{margin:0;min-height:80px}
 .nn{margin-top:10px;font-weight:800;color:var(--acc);text-align:center}
+.hwr{margin-bottom:12px}
+.hwr .top{display:grid;grid-template-columns:1fr 32px;gap:8px;align-items:center}
+.hwr input.lesson{margin:0;font-weight:800}
+.hwr button.x{margin-top:0}
+.hwr .hw{margin-top:8px}
+.ac{display:flex;flex-direction:column;gap:5px;margin-top:6px}
+.ac:empty{display:none}
+.ac button.sg{text-align:left;padding:9px 12px;border-radius:12px;font-size:.95rem;box-shadow:2px 2px 0 var(--ink)}
 </style>
 </head>
 <body>
 <div class="scene" id="scene" aria-hidden="true"></div>
 <main id="app"></main>
 <script>
-const VERSION="2.6";
+const VERSION="3.0";
 // [назва, "на ..." для питання, символ]
 const S={
  ist:["Історія","історії","📜"],tech:["Технології","технологіях","🛠️"],bio:["Біологія","біології","🧬"],
@@ -211,7 +219,7 @@ function persist(){
  try{
   if(st.dbg!==null||st.step==="who"||st.step==="week"||st.step==="weekend"){localStorage.removeItem(KEY);return}
   if(!["q","hw","news","out"].includes(st.step))return;
-  localStorage.setItem(KEY,JSON.stringify({day:st.day||new Date().toDateString(),who:st.who,week:st.week,i:st.i,step:st.step,ans:st.ans,hw:st.hw,news:st.news,sig:st.list.map(l=>l[0]+"|"+(l[3]||"")).join()}));
+  localStorage.setItem(KEY,JSON.stringify({day:st.day||new Date().toDateString(),who:st.who,week:st.week,i:st.i,step:st.step,ans:st.ans,mg:st.mg,hw:st.hw,news:st.news,sig:st.list.map(l=>l[0]+"|"+(l[3]||"")).join()}));
  }catch(_){}
 }
 function restore(){
@@ -219,11 +227,13 @@ function restore(){
   const d=JSON.parse(localStorage.getItem(KEY)||"null");
   if(!d||d.day!==new Date().toDateString()||(d.who!=="roma"&&d.who!=="max"))return;
   st.who=d.who;st.week=d.week;begin();st.day=d.day;
+  st.mg=Array.isArray(d.mg)?d.mg.filter(Number.isInteger):[];st.list=mergedList(st.base,st.mg);
   const sig=st.list.map(l=>l[0]+"|"+(l[3]||"")).join();
   if(st.step!=="q"||sig!==d.sig||!Array.isArray(d.ans)||d.ans.length!==st.list.length)throw 0;
-  st.ans=d.ans;st.i=Math.min(Math.max(+d.i||0,0),st.list.length-1);st.step=["hw","news","out"].includes(d.step)?d.step:"q";if(Array.isArray(d.hw)&&d.hw.every(r=>r&&typeof r.t==="string"&&typeof r.m==="string"))st.hw=d.hw;if(Array.isArray(d.news)&&d.news.every(x=>typeof x==="string"))st.news=d.news;st.restored=st.step==="q"&&!!(st.i>0||st.ans[0].text||st.ans[0].r);
+  st.ans=d.ans;st.i=Math.min(Math.max(+d.i||0,0),st.list.length-1);st.step=["hw","news","out"].includes(d.step)?d.step:"q";if(Array.isArray(d.hw)&&d.hw.every(r=>r&&typeof r.t==="string"&&typeof r.m==="string"))st.hw=d.hw.map(r=>({l:typeof r.l==="string"?r.l:"",t:r.t,m:r.m}));if(Array.isArray(d.news)&&d.news.every(x=>typeof x==="string"))st.news=d.news;st.restored=st.step==="q"&&!!(st.i>0||st.ans[0].text||st.ans[0].r);
  }catch(_){Object.assign(st,{step:"who",who:null,week:null,list:[],i:0,ans:[],restored:false});try{localStorage.removeItem(KEY)}catch(_){}}
 }
+document.addEventListener("focusout",ev=>{const i=ev.target.dataset&&ev.target.dataset.hwl;if(i!==undefined)setTimeout(()=>{const ac=document.querySelector('[data-ac="'+i+'"]');if(ac)ac.innerHTML=""},250)});
 document.addEventListener("visibilitychange",()=>{if(document.hidden)persist()});
 addEventListener("pagehide",persist);
 const e=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -242,22 +252,72 @@ function nextDay(){ // завтра; у п'ятницю — понеділок
  const d=theDate(),w=d.getDay();d.setDate(d.getDate()+(w===5?3:w===6?2:1));
  return {word:WDA[d.getDay()],date:`${d.getDate()} ${MON[d.getMonth()]}`,full:`${WD[d.getDay()]}, ${d.getDate()} ${MON[d.getMonth()]}`};
 }
-function begin(){
- const idx=dayIdx();
- if(idx===0||idx===6){st.step="weekend";return}
- const sc=[]; // укр + всесвітня історія підряд = "Історія"
- const raw=SCHED[st.who==="roma"?"roma":st.week][idx-1],noL=raw.includes("nolunch");
+function dayKeys(raw){ // ключі уроків дня; укр + всесвітня історія підряд = "Історія"
+ const sc=[];
  for(const k of raw){
-  if(k==="nolunch")continue;
+  if(k==="nolunch"||!S[k])continue;
   const p=sc[sc.length-1];
   if((p==="ahist"&&k==="whist")||(p==="whist"&&k==="ahist")){sc[sc.length-1]="ist";continue}
   sc.push(k);
  }
- st.list=sc.map((k,i)=>{ // однакові уроки підряд: 1-й урок, 2-й урок
+ return sc;
+}
+function baseList(raw){ // уроки дня по одному (подвійні = 1-й і 2-й урок) + обід. Елемент: [назва,де,іконка,№ уроку,№ у списку]
+ const sc=dayKeys(raw),noL=raw.includes("nolunch");
+ return sc.map((k,i)=>{
   let a=i,b=i;while(a>0&&sc[a-1]===k)a--;while(b<sc.length-1&&sc[b+1]===k)b++;
-  return b>a?S[k].slice(0,3).concat(i-a+1):S[k];
+  return [...S[k].slice(0,3),b>a?i-a+1:0,i];
  }).concat(noL?[]:[LUNCH]);
- st.ans=st.list.map(()=>({text:"",r:0}));st.hw=[{t:"",m:""},{t:"",m:""},{t:"",m:""}];st.news=["",""];st.i=0;st.step="q";st.day=new Date().toDateString();
+}
+function mergedList(base,mg){ // застосувати "об'єднані" подвійні уроки
+ const out=[];
+ for(let i=0;i<base.length;i++){
+  const l=base[i],n=base[i+1];
+  if(l!==LUNCH&&mg.includes(i)&&n&&n!==LUNCH&&n[0]===l[0]){out.push([l[0],l[1],l[2],0,i,true]);i++}else out.push(l);
+ }
+ return out;
+}
+function mergeKind(i){ // чи можна об'єднати / розділити поточний урок
+ const l=st.list[i];if(!l||l===LUNCH)return "";
+ if(l[5])return "split";
+ const n=st.list[i+1],p=st.list[i-1];
+ if(l[3]===1&&n&&n!==LUNCH&&n[0]===l[0]&&n[3]===2)return "merge";
+ if(l[3]===2&&p&&p!==LUNCH&&p[0]===l[0]&&p[3]===1)return "merge";
+ return "";
+}
+function mergeLesson(){
+ const i=st.i,l=st.list[i],k=mergeKind(i);
+ if(k==="split"){
+  st.list.splice(i,1,[l[0],l[1],l[2],1,l[4]],[l[0],l[1],l[2],2,l[4]+1]);
+  st.ans.splice(i,1,st.ans[i],{text:"",r:0});
+  st.mg=st.mg.filter(x=>x!==l[4]);
+ }else if(k==="merge"){
+  const j=l[3]===2?i-1:i,a=st.list[j],A=st.ans[j],B=st.ans[j+1];
+  st.list.splice(j,2,[a[0],a[1],a[2],0,a[4],true]);
+  st.ans.splice(j,2,(A.text||A.r)?A:B);
+  st.mg.push(a[4]);st.i=j;
+ }
+}
+const LESSONS=[...new Map(Object.values(S).map(v=>[v[0],v])).values()]; // усі уроки зі списку розкладу
+const lc=x=>x.toLocaleLowerCase("uk");
+function acHtml(i,q){ // підказки під час друку назви уроку
+ q=lc(q.trim());if(!q)return "";
+ const m=LESSONS.map((l,idx)=>{const n=lc(l[0]);return {l,idx,r:n.startsWith(q)?0:n.split(/[\s,.\-]+/).some(w=>w.startsWith(q))?1:n.includes(q)?2:9}}).filter(x=>x.r<9).sort((a,b)=>a.r-b.r).slice(0,6);
+ if(m.length===1&&lc(m[0].l[0])===q)return "";
+ return m.map(x=>`<button class="sg" data-sg="${x.idx}" data-i="${i}">${x.l[2]} ${e(x.l[0])}</button>`).join("");
+}
+function tomorrowList(){ // уроки наступного навчального дня; подвійні уроки об'єднані автоматично
+ const w=dayIdx(),n=w===5?1:w+1; // п'ятниця → понеділок
+ const wk=st.who==="roma"?"roma":(w===5?(st.week==="A"?"B":"A"):st.week); // у Максима після п'ятниці тиждень A↔B змінюється
+ const sc=dayKeys((SCHED[wk]||[])[n-1]||[]);
+ return sc.filter((k,i)=>k!==sc[i-1]).map(k=>S[k]);
+}
+function begin(){
+ const idx=dayIdx();
+ if(idx===0||idx===6){st.step="weekend";return}
+ const raw=SCHED[st.who==="roma"?"roma":st.week][idx-1];
+ st.base=baseList(raw);st.mg=[];st.list=mergedList(st.base,st.mg);
+ st.ans=st.list.map(()=>({text:"",r:0}));st.hw=[{l:"",t:"",m:""},{l:"",t:"",m:""},{l:"",t:"",m:""}];st.news=["",""];st.i=0;st.step="q";st.day=new Date().toDateString();
 }
 function dbgHtml(){
  if(!st.dbgShown)return "";
@@ -279,7 +339,9 @@ function actBtn(a,last){
  const lunch=st.list[st.i]===LUNCH;
  const main=okAns(a)?`<button class="go" data-act="next">Далі ➡️</button>`:`<button data-act="skip">${lunch?"Обіду не було ❌":"Урок скасовано ❌"}</button>`;
  const sub=lunch?"":`<button class="${a.sub?"on":""}" data-act="sub">Була заміна 🔄</button>`;
- return main+sub;
+ const mk=mergeKind(st.i);
+ const mb=mk==="merge"?`<button data-act="merge">Об'єднати уроки 🔗</button>`:mk==="split"?`<button data-act="merge">Розділити на 2 уроки ✂️</button>`:"";
+ return main+sub+mb;
 }
 let lastKey="";
 function render(){
@@ -308,10 +370,9 @@ function render(){
  }else if(st.step==="hw"){
   const nd=nextDay();
   h=`${datePill()}<div class="hero">📝</div><h2>Домашнє завдання на ${nd.word}</h2>
-  <p class="sub" style="margin-bottom:10px">${nd.full}. Зліва напиши, що задали і з якого предмета. Справа приблизно скільки часу це займе. Час можна не писати, тоді завдання все одно залишиться.</p>
-  <div class="hwh"><span>Що задали</span><span>Час</span><span></span></div>
-  ${st.hw.map((r,i)=>`<div class="hw"><textarea data-hwt="${i}" placeholder="Напр.: Алгебра, №45-48">${e(r.t)}</textarea><input type="text" data-hwm="${i}" placeholder="30 хв" value="${e(r.m)}" maxlength="20" autocomplete="off"><button class="x" data-act="hwRm" data-i="${i}" aria-label="Видалити">✖</button></div>`).join("")||'<p class="sub">Домашки немає? Тоді просто тисни «Далі».</p>'}
-  <div class="row"><button data-act="hwAdd">➕ Додати ще</button></div>
+  <p class="sub" style="margin-bottom:12px">${nd.full}. Почни писати назву уроку, і програма підкаже, а ти натиснеш на потрібний. Потім напиши, що задали, і приблизно скільки хвилин це займе (час можна не писати).</p>
+  ${st.hw.map((r,i)=>`<div class="hwr"><div class="top"><input type="text" class="lesson" data-hwl="${i}" placeholder="Урок, напр. Зарубіжна література" value="${e(r.l)}" maxlength="40" autocomplete="off"><button class="x" data-act="hwRm" data-i="${i}" aria-label="Видалити">✖</button></div><div class="ac" data-ac="${i}"></div><div class="hw"><textarea data-hwt="${i}" placeholder="Що задали">${e(r.t)}</textarea><input type="text" data-hwm="${i}" placeholder="Хв" value="${e(r.m)}" maxlength="20" autocomplete="off"></div></div>`).join("")}
+  <div class="row"><button data-act="hwAdd">➕ Додати ще</button><button data-act="hwTomorrow">📅 Уроки на ${nd.word}</button></div>
   <div class="row"><button class="go" data-act="hwNext">Далі ➡️</button><button class="ghost" data-act="prev">← Назад</button></div>`;
  }else if(st.step==="news"){
   h=`${datePill()}<div class="hero">📰</div><h2>Новини зі школи</h2>
@@ -374,8 +435,8 @@ function build(){
   avg=`⭐ Середня оцінка дня (уроки й обід): ${m.toFixed(1).replace(".",",")}/10 ${rEmo(Math.round(m))}`;
  }
  const nd=nextDay(),one=x=>x.trim().replace(/\s*\n\s*/g," ");
- const hw=st.hw.filter(r=>r.t.trim());
- const hwB=`📝 Домашнє завдання на ${nd.word} (${nd.date}):\n`+(hw.length?hw.map((r,i)=>{const m=one(r.m);return `${i+1}. ${one(r.t)}${m?" — "+(/^\d+$/.test(m)?m+" хв":m):""}`}).join("\n"):"немає 🎉");
+ const hw=st.hw.map(r=>({n:one(r.l),t:one(r.t),m:one(r.m)})).filter(r=>r.t);
+ const hwB=`📝 Домашнє завдання на ${nd.word} (${nd.date}):\n`+(hw.length?hw.map(r=>(r.n?r.n+" | ":"")+r.t+(r.m?" | "+(/^\d+$/.test(r.m)?r.m+" хв":r.m):"")).join("\n"):"немає 🎉");
  const nw=st.news.filter(x=>x.trim());
  const nwB=`📰 Новини зі школи:\n`+(nw.length?nw.map((x,i)=>`${i+1}. ${x.trim()}`).join("\n"):"немає");
  return `${ic} ${nm}\n📅 ${dateLine()}\n\n${body}\n\n${avg}\n\n${hwB}\n\n${nwB}`;
@@ -388,6 +449,7 @@ $.addEventListener("input",ev=>{
   const ok=okAns(st.ans[st.i]),act=document.getElementById("act"),hn=document.getElementById("hint");
   if(act&&!act.querySelector('[data-act="'+(ok?"next":"skip")+'"]'))act.innerHTML=actBtn(st.ans[st.i],st.i===st.list.length-1);
   if(hn)hn.hidden=ok;
+ }else if(ev.target.dataset.hwl!==undefined){const i=+ev.target.dataset.hwl;st.hw[i].l=ev.target.value;persist();const ac=document.querySelector('[data-ac="'+i+'"]');if(ac)ac.innerHTML=acHtml(i,ev.target.value)
  }else if(ev.target.dataset.hwt!==undefined){st.hw[+ev.target.dataset.hwt].t=ev.target.value;persist()
  }else if(ev.target.dataset.hwm!==undefined){st.hw[+ev.target.dataset.hwm].m=ev.target.value;persist()
  }else if(ev.target.dataset.nws!==undefined){st.news[+ev.target.dataset.nws]=ev.target.value;persist()
@@ -404,7 +466,7 @@ if(window.visualViewport){
 }
 $.addEventListener("focusin",ev=>{
  if(ev.target.id==="txt")setTimeout(()=>{const a=document.getElementById("act");if(a)a.scrollIntoView({block:"end",behavior:"smooth"})},350);
- else if(ev.target.dataset&&(ev.target.dataset.hwt!==undefined||ev.target.dataset.hwm!==undefined||ev.target.dataset.nws!==undefined))setTimeout(()=>ev.target.scrollIntoView({block:"center",behavior:"smooth"}),350);
+ else if(ev.target.dataset&&(ev.target.dataset.hwt!==undefined||ev.target.dataset.hwm!==undefined||ev.target.dataset.nws!==undefined||ev.target.dataset.hwl!==undefined)){if(ev.target.dataset.hwl!==undefined){const i=+ev.target.dataset.hwl,ac=document.querySelector('[data-ac="'+i+'"]');if(ac)ac.innerHTML=acHtml(i,ev.target.value)}setTimeout(()=>ev.target.scrollIntoView({block:"center",behavior:"smooth"}),350)}
 });
 $.addEventListener("change",ev=>{if(ev.target.dataset.lunch!==undefined)st.ed.lunch[st.ed.day]=ev.target.checked});
 $.addEventListener("click",async ev=>{
@@ -420,10 +482,13 @@ $.addEventListener("click",async ev=>{
  else if(d.act==="next"){save();if(!okAns(st.ans[st.i]))return;if(st.i<st.list.length-1)st.i++;else st.step="hw"}
  else if(d.act==="skip"){st.ans[st.i]={text:"-",r:-1};if(st.i<st.list.length-1)st.i++;else st.step="hw"}
  else if(d.act==="sub"){save();const a=st.ans[st.i];a.sub=!a.sub}
+ else if(d.act==="merge"){save();mergeLesson()}
+ else if(d.sg!==undefined){const i=+d.i;st.hw[i].l=LESSONS[+d.sg][0];setTimeout(()=>{const t=document.querySelector('[data-hwt="'+i+'"]');if(t)t.focus()},0)}
+ else if(d.act==="hwAdd"){st.hw.push({l:"",t:"",m:""})}
+ else if(d.act==="hwRm"){st.hw.splice(+d.i,1)}
+ else if(d.act==="hwTomorrow"){st.hw=st.hw.filter(r=>r.l.trim()||r.t.trim()||r.m.trim());const have=st.hw.map(r=>lc(r.l.trim()));tomorrowList().forEach(l=>{if(!have.includes(lc(l[0])))st.hw.push({l:l[0],t:"",m:""})})}
  else if(d.act==="hwNext"){st.step="news"}
  else if(d.act==="newsNext"){st.step="out"}
- else if(d.act==="hwAdd"){st.hw.push({t:"",m:""})}
- else if(d.act==="hwRm"){st.hw.splice(+d.i,1)}
  else if(d.act==="newsAdd"){st.news.push("")}
  else if(d.act==="newsRm"){st.news.splice(+d.i,1)}
  else if(d.act==="prev"){save();if(st.step==="out")st.step="news";else if(st.step==="news")st.step="hw";else if(st.step==="hw")st.step="q";else if(st.i>0)st.i--;else st.step=st.who==="max"?"week":"who"}
